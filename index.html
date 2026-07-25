@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Champions League EFB Tournament</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="mainNav">
+    <div class="logo">
+        <i class="fa-solid fa-star"></i> UCL EFB Tournament
+    </div>
+    <div class="nav-actions">
+        <button id="screenshotModeBtn" class="screenshot-btn">📸 Screenshot Mode</button>
+    </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero ucl-hero">
+    <div class="ucl-stars">★ ★ ★ ★ ★ ★ ★ ★</div>
+    <h1>CHAMPIONS LEAGUE<br>EFB TOURNAMENT</h1>
+    <p>16 Teams · 4 Groups · Two-Leg Knockout · Grand Final</p>
+    <div id="countdown">Loading Countdown…</div>
+</header>
+
+<!-- OVERVIEW STATS -->
+<section class="card overview-grid">
+    <div class="stat-card"><h3 id="teamCount">0</h3><p>Teams</p></div>
+    <div class="stat-card"><h3 id="matchCount">0</h3><p>Total Matches</p></div>
+    <div class="stat-card"><h3 id="completedCount">0</h3><p>Completed</p></div>
+    <div class="stat-card"><h3 id="stageDisplay">Group</h3><p>Current Stage</p></div>
+</section>
+
+<!-- GROUP STAGE -->
+<section class="card" id="groupsSection">
+    <div class="section-header">
+        <h2>⚽ Group Stage</h2>
+        <button class="download-btn hide-in-screenshot" id="downloadResultsBtn" style="background:linear-gradient(135deg,#2ECC71,#1a9e57);">
+            <i class="fa-solid fa-download"></i> Download Results
+        </button>
+        <button class="download-btn hide-in-screenshot" id="downloadGroupsBtn">
+            <i class="fa-solid fa-download"></i> Download
+        </button>
+    </div>
+    <div class="table-legend" style="margin-bottom:14px;">
+        <span class="legend-item"><span class="top8-dot"></span> Top 2 per group qualify for the Quarter Finals</span>
+    </div>
+    <div class="matchday-tabs" id="groupTabs"></div>
+    <div id="groupPanels"></div>
+</section>
+
+<!-- KNOCKOUT BRACKET -->
+<section class="card" id="knockoutSection">
+    <div class="section-header">
+        <h2>🏆 Knockout Bracket <span style="font-size:13px;color:#aaa;font-weight:400;">(Two Legs · Final is Single Leg)</span></h2>
+        <button class="download-btn hide-in-screenshot" id="downloadKnockoutBtn">
+            <i class="fa-solid fa-download"></i> Download
+        </button>
+    </div>
+    <div class="knockout-bracket" id="knockoutBracket"></div>
+</section>
+
+<!-- CHAMPION -->
+<section class="champion-card ucl-champion-card" id="championSection">
+    <div class="ucl-trophy">🏆</div>
+    <h2>CHAMPIONS LEAGUE WINNER</h2>
+    <img id="championLogo" src="" alt="Champion Logo" class="champion-logo" style="display:none;">
+    <div class="champion-value" id="champion">No champion yet</div>
+    <button class="download-btn hide-in-screenshot" id="downloadBtn">
+        <i class="fa-solid fa-download"></i> Download
+    </button>
+</section>
+
+<!-- RULES -->
+<section class="card hide-in-screenshot">
+    <h2>📋 Tournament Rules</h2>
+
+    <h3>1. Tournament Format</h3>
+    <ul>
+        <li>16 teams divided into 4 groups (A–D) of 4 teams each.</li>
+        <li>Each team plays every other team in their group <strong>twice</strong> (home &amp; away) — 6 matches per team.</li>
+        <li>12 matches per group · 48 total group matches.</li>
+        <li>Top 2 teams per group advance to the Knockout Stage (8 teams).</li>
+    </ul>
+
+    <h3>2. Points System</h3>
+    <ul>
+        <li>Win = 3 pts · Draw = 1 pt · Loss = 0 pts</li>
+        <li>Tiebreaker: Points → Goal Difference → Goals Scored</li>
+    </ul>
+
+    <h3>3. Knockout Stage</h3>
+    <ul>
+        <li>Quarter-Final seeding: 1st overall vs 8th, 2nd vs 7th, 3rd vs 6th, 4th vs 5th (ranked by Pts → GD → GF across all 4 groups).</li>
+        <li>All knockout rounds (QF, SF) are played over <strong>TWO LEGS</strong> — aggregate score decides the winner.</li>
+        <li>If aggregate is level after Leg 2 → <strong>Extra Time → Penalty Shoot-out.</strong></li>
+        <li>The <strong>Grand Final</strong> is a single leg. If level after 90 mins → Extra Time → Penalties.</li>
+    </ul>
+
+    <h3>4. Match Settings</h3>
+    <ul>
+        <li>Duration: <strong>10 Minutes</strong></li>
+        <li>Extra Time: <strong>ON</strong> · Penalties: <strong>ON</strong></li>
+        <li>Substitutions: <strong>6</strong> · Injuries: <strong>OFF</strong></li>
+    </ul>
+
+    <h3>5. 📶 Disconnection Rules</h3>
+    <ul>
+        <li><strong>0–5 Minutes:</strong> Replay the full 10-minute match.</li>
+        <li><strong>5–10 Minutes:</strong> Replay an 8-minute match.</li>
+        <li><strong>10–20 Minutes:</strong> Replay a 7-minute match.</li>
+        <li><strong>20–30 Minutes:</strong> Replay a 6-minute match.</li>
+        <li><strong>30–40 Minutes:</strong> Replay a 5-minute match.</li>
+        <li><strong>40–50 Minutes:</strong> Replay the 1st Half (5 minutes) only.</li>
+        <li><strong>50–70 Minutes:</strong> Replay the 1st Half (5 minutes) only.</li>
+        <li><strong>70–90 Minutes:</strong>
+            <ul style="margin-top:6px;">
+                <li>If the <em>winning</em> player disconnects → replay the 1st Half (5 minutes).</li>
+                <li>If the <em>losing</em> player disconnects → match result stands, match ends.</li>
+            </ul>
+        </li>
+        <li>If a player <strong>intentionally quits while losing</strong>, the winning player will be awarded 3 additional goals.</li>
+        <li>Repeated intentional disconnections or attempts to manipulate results may result in a 3–0 forfeit, points deduction, or disqualification — at the discretion of the tournament organizers.</li>
+        <li>The tournament organizers' decision on all disconnection cases is <strong>final.</strong></li>
+    </ul>
+
+    <h3>6. Match Results</h3>
+    <ul>
+        <li>A screenshot of the full-time match result must be posted in the official tournament WhatsApp group <strong>immediately after the match.</strong></li>
+        <li>Tag an admin when posting the result.</li>
+        <li>Only verified results will be recorded in the table.</li>
+    </ul>
+
+    <h3>7. Player Conduct</h3>
+    <ul>
+        <li>Respect all players and tournament administrators at all times.</li>
+        <li>Insults, harassment, cheating, exploitation of game bugs, or any form of unsporting behavior will not be tolerated.</li>
+        <li>Any player found guilty of misconduct may face: match forfeiture, point deduction, suspension, or disqualification.</li>
+        <li>The decisions of the tournament organizers are <strong>final and binding.</strong></li>
+    </ul>
+
+    <p style="text-align:center; margin-top:24px; font-style:italic; color:#aaa;">
+        🏆 May the best player lift the Champions League EFB Trophy!
+    </p>
+</section>
+
+<!-- TEAM MODAL -->
+<div class="modal" id="teamModal" style="display:none;">
+    <div class="modal-content">
+        <button class="modal-close" id="teamModalClose">×</button>
+        <div class="team-profile">
+            <div class="team-logo" id="modalTeamLogo"></div>
+            <h3 id="modalTeamName">Team Name</h3>
+            <div class="team-stats" id="modalTeamStats"></div>
+        </div>
+    </div>
+</div>
+
+<footer>Champions League EFB Tournament · Powered by Firebase · Admin: 08024348605</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="script.js" type="module"></script>
+</body>
+</html>

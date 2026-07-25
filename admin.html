@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UCL Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ── LOGIN ──────────────────────────────────────────────────────────────── -->
+<div id="loginContainer" class="login-container">
+    <div class="login-box">
+        <h1><i class="fa-solid fa-shield"></i> UCL Admin</h1>
+        <div id="loginError" class="login-error"></div>
+        <input type="email"    id="loginEmail"    placeholder="Email"    autocomplete="email">
+        <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+        <button id="loginButton"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+    </div>
+</div>
+
+<!-- ── ADMIN DASHBOARD ────────────────────────────────────────────────────── -->
+<div id="adminContent" class="admin-content">
+
+    <!-- Top bar -->
+    <div class="admin-navbar">
+        <h2><i class="fa-solid fa-star"></i> UCL Admin Panel</h2>
+        <div class="admin-user-info">
+            <span id="adminEmail">Admin</span>
+            <button id="logoutButton" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo"><i class="fa-solid fa-star"></i> Champions League Tournament</div>
+    </nav>
+
+    <header class="hero ucl-hero">
+        <div class="ucl-stars">★ ★ ★ ★ ★ ★ ★ ★</div>
+        <h1>TOURNAMENT MANAGEMENT</h1>
+        <p>Groups · Results · Knockout (Two Legs) · Final · Champion</p>
+    </header>
+
+    <!-- Feedback -->
+    <div id="successMessage" class="card success-message" style="width:92%;margin:20px auto;display:none;">
+        <span id="successText"></span>
+    </div>
+    <div id="loadingOverlay" class="loading-overlay" style="display:none;">
+        <div class="loading-box">
+            <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+            <p id="loadingMessage">Please wait…</p>
+        </div>
+    </div>
+
+    <!-- ── TOURNAMENT STATISTICS ───────────────────────────────────────── -->
+    <section class="card">
+        <h2><i class="fa-solid fa-chart-bar"></i> Tournament Statistics</h2>
+        <div class="stats">
+            <div class="stat"><h3 id="adminTeamCount">0</h3><p>Teams</p></div>
+            <div class="stat"><h3 id="adminGroupProgress">0/48</h3><p>Group Matches</p></div>
+            <div class="stat"><h3 id="adminKnockoutProgress">0/0</h3><p>Knockout Matches</p></div>
+            <div class="stat"><h3 id="adminStage">Group</h3><p>Current Stage</p></div>
+            <div class="stat"><h3 id="adminChampion">–</h3><p>Champion</p></div>
+        </div>
+    </section>
+
+    <!-- ── TOURNAMENT SETUP ────────────────────────────────────────────── -->
+    <section class="card">
+        <h2><i class="fa-solid fa-cogs"></i> Tournament Setup</h2>
+
+        <label class="field-label">Tournament Start Date &amp; Time:</label>
+        <input type="datetime-local" id="countdownDateTime" class="admin-input">
+
+        <p style="margin:18px 0 12px; color:#aaa; font-size:14px;">
+            Enter exactly 4 team names per group (one per line):
+        </p>
+
+        <div class="groups-input-grid">
+            <!-- Groups A–B -->
+            <div class="group-input-col">
+                <label class="field-label">Group A</label>
+                <textarea id="groupAInput" rows="4" placeholder="Team 1&#10;Team 2&#10;Team 3&#10;Team 4"></textarea>
+
+                <label class="field-label" style="margin-top:14px;">Group B</label>
+                <textarea id="groupBInput" rows="4" placeholder="Team 1&#10;Team 2&#10;Team 3&#10;Team 4"></textarea>
+            </div>
+
+            <!-- Groups C–D -->
+            <div class="group-input-col">
+                <label class="field-label">Group C</label>
+                <textarea id="groupCInput" rows="4" placeholder="Team 1&#10;Team 2&#10;Team 3&#10;Team 4"></textarea>
+
+                <label class="field-label" style="margin-top:14px;">Group D</label>
+                <textarea id="groupDInput" rows="4" placeholder="Team 1&#10;Team 2&#10;Team 3&#10;Team 4"></textarea>
+            </div>
+        </div>
+
+        <div class="btn-row" style="margin-top:18px;">
+            <button id="loadDefaultTeamsButton" class="btn-secondary">
+                <i class="fa-solid fa-list"></i> Load Default Teams
+            </button>
+            <button id="generateTournamentButton">
+                <i class="fa-solid fa-play"></i> Create Tournament
+            </button>
+        </div>
+
+        <div class="btn-row" style="margin-top:10px;">
+            <button id="startKnockoutButton" class="btn-blue">
+                <i class="fa-solid fa-fire"></i> Start Knockout Stage
+            </button>
+            <button id="resetTournamentButton" class="btn-danger">
+                <i class="fa-solid fa-rotate"></i> Reset Tournament
+            </button>
+        </div>
+    </section>
+
+    <!-- ── SUBMIT / EDIT MATCH RESULT ─────────────────────────────────── -->
+    <section class="card">
+        <h2><i class="fa-solid fa-pen"></i> Submit / Edit Match Result</h2>
+
+        <!-- Group filter -->
+        <label class="field-label" style="margin-top:10px;">Filter by Group / Stage:</label>
+        <select id="groupFilter" style="margin-bottom:4px;">
+            <option value="all">All Matches</option>
+            <option value="A">Group A</option>
+            <option value="B">Group B</option>
+            <option value="C">Group C</option>
+            <option value="D">Group D</option>
+            <option value="knockout">Knockout Only</option>
+        </select>
+
+        <div class="result-form-grid" style="margin-top:14px;">
+            <select id="adminMatchSelect"></select>
+            <input type="number" id="adminScore1" placeholder="Team 1 Score" min="0">
+            <input type="number" id="adminScore2" placeholder="Team 2 Score" min="0">
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button id="submitResultButton" style="flex:1; min-width:130px;">
+                    <i class="fa-solid fa-check"></i> Submit
+                </button>
+                <button id="clearResultButton" class="btn-danger" style="flex:1; min-width:130px;">
+                    <i class="fa-solid fa-trash"></i> Clear
+                </button>
+            </div>
+        </div>
+
+        <!-- Aggregate preview — shown when Leg 2 is selected -->
+        <div id="aggPreview" class="agg-preview"></div>
+
+        <!-- Penalty section — shown for knockout matches only -->
+        <div id="penaltyRow" style="display:none; margin-top:18px; background:#081727; padding:16px; border-radius:12px;">
+            <label style="display:flex; align-items:center; gap:10px; color:#ddd; margin-bottom:14px; cursor:pointer;">
+                <input type="checkbox" id="penaltyToggle" style="width:18px;height:18px;">
+                <span>⚡ Tie level after Leg 2 / Extra Time — Penalty Shoot-out winner:</span>
+            </label>
+            <select id="penaltyWinnerSelect" style="display:none;">
+                <option value="">— Select penalty winner —</option>
+            </select>
+        </div>
+
+        <!-- Two-leg info note -->
+        <div style="margin-top:16px; padding:12px 16px; background:rgba(255,215,0,.06);
+                    border:1px solid rgba(255,215,0,.2); border-radius:10px; font-size:13px; color:#aaa;">
+            <strong style="color:var(--gold);">ℹ️ Two-leg format:</strong>
+            Enter <strong>Leg 1</strong> first, then <strong>Leg 2</strong>.
+            The aggregate is calculated automatically after Leg 2.
+            If the aggregate is level, tick the Penalties box and select the winner.
+            The <strong>Final</strong> is a single leg — penalties apply if level after Extra Time.
+        </div>
+    </section>
+
+    <!-- ── LIVE GROUPS & BRACKET ───────────────────────────────────────── -->
+    <section class="card">
+        <h2><i class="fa-solid fa-table"></i> Live Groups &amp; Bracket</h2>
+        <div id="adminGroupOverview">Loading tournament data…</div>
+    </section>
+
+</div><!-- /#adminContent -->
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>
